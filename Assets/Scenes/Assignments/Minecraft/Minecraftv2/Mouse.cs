@@ -20,7 +20,6 @@ public class Mouse : MonoBehaviour
         xRotation -= mouseY;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        transform.Rotate(Vector3.up * mouseX);
-        transform.Rotate(Vector3.right * mouseY);
+        transform.localRotation = Quaternion.Euler(xRotation, transform.localEulerAngles.y + mouseX, 0f);
     }
 }

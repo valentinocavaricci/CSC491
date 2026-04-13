@@ -5,51 +5,54 @@ public class CustomBlockUV : MonoBehaviour
 {
     public Material material;
 
-    void Start()
+    public enum BlockType
     {
+        Stone,
+        Dirt,
+        Grass
+    }
+
+    public BlockType blockType;
+
+    public void Build(BlockType type)
+    {
+        blockType = type;
+
         Mesh mesh = new Mesh();
         mesh.name = "CustomBlock";
 
         Vector3[] vertices = new Vector3[]
         {
-           
             new Vector3(0, 0, 1),
             new Vector3(1, 0, 1),
             new Vector3(1, 1, 1),
             new Vector3(0, 1, 1),
 
-           
             new Vector3(1, 0, 0),
             new Vector3(0, 0, 0),
             new Vector3(0, 1, 0),
             new Vector3(1, 1, 0),
 
-           
             new Vector3(0, 0, 0),
             new Vector3(0, 0, 1),
             new Vector3(0, 1, 1),
             new Vector3(0, 1, 0),
 
-            
             new Vector3(1, 0, 1),
             new Vector3(1, 0, 0),
             new Vector3(1, 1, 0),
             new Vector3(1, 1, 1),
 
-           
             new Vector3(0, 1, 1),
             new Vector3(1, 1, 1),
             new Vector3(1, 1, 0),
             new Vector3(0, 1, 0),
 
-           
             new Vector3(0, 0, 0),
             new Vector3(1, 0, 0),
             new Vector3(1, 0, 1),
             new Vector3(0, 0, 1)
         };
-
-
 
         int[] triangles = new int[]
         {
@@ -63,23 +66,39 @@ public class CustomBlockUV : MonoBehaviour
 
         float tileSize = 1f / 16f;
 
-        Vector2[] dirtUV = GetTileUV(1, 0, tileSize);
-        Vector2[] grassTopUV = GetTileUV(0, 0, tileSize);
+        Vector2[] topUV;
+        Vector2[] sideUV;
+        Vector2[] bottomUV;
+
+        switch (blockType)
+        {
+            case BlockType.Stone:
+                topUV = GetTileUV(2, 0, tileSize);
+                sideUV = GetTileUV(2, 0, tileSize);
+                bottomUV = GetTileUV(2, 0, tileSize);
+                break;
+
+            case BlockType.Dirt:
+                topUV = GetTileUV(1, 0, tileSize);
+                sideUV = GetTileUV(1, 0, tileSize);
+                bottomUV = GetTileUV(1, 0, tileSize);
+                break;
+
+            default:
+                topUV = GetTileUV(0, 0, tileSize);
+                sideUV = GetTileUV(1, 0, tileSize);
+                bottomUV = GetTileUV(1, 0, tileSize);
+                break;
+        }
 
         Vector2[] uvs = new Vector2[24];
 
-        CopyFaceUVs(uvs, 0, dirtUV);
-
-        CopyFaceUVs(uvs, 4, dirtUV);
-
-        CopyFaceUVs(uvs, 8, dirtUV);
-
-        CopyFaceUVs(uvs, 12, dirtUV);
-
-        CopyFaceUVs(uvs, 16, grassTopUV);
-
-      
-        CopyFaceUVs(uvs, 20, dirtUV);
+        CopyFaceUVs(uvs, 0, sideUV);
+        CopyFaceUVs(uvs, 4, sideUV);
+        CopyFaceUVs(uvs, 8, sideUV);
+        CopyFaceUVs(uvs, 12, sideUV);
+        CopyFaceUVs(uvs, 16, topUV);
+        CopyFaceUVs(uvs, 20, bottomUV);
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
