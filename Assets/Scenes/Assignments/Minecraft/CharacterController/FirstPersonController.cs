@@ -57,9 +57,10 @@ public class FirstPersonController : MonoBehaviour
             verticalVelocity = -2f;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
+        if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded) 
         {
-            verticalVelocity = Mathf.Sqrt(jumpForce * -2f * gravity); //it isn't jumping and i cannot figure out why 
+            Debug.Log("Jump!");
+            verticalVelocity = Mathf.Sqrt(jumpForce * -2f * gravity); 
         }
 
         verticalVelocity += gravity * Time.deltaTime;
